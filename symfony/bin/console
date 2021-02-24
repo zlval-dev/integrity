@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-require dirname(__DIR__).'/src/Commands/getHeadersCommand.php';
-
 use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -45,5 +43,5 @@ $application = new Application($kernel);
 $application->run($input);
 
 $newcommands = new Application();
-$newcommands->add(new getHeadersCommand());
+$newcommands->add(new GetHeadersCommand());
 $newcommands->run();
