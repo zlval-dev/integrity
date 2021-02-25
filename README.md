@@ -15,6 +15,6 @@
   
 -> E o projeto está pronto a ser utilizado!
 
--> Comando para obter os headers, substituindo o <url> pelo url que pretende:
+-> Comando para obter os headers, substituindo o (url) pelo url que pretende:
   
-  php bin/console getheaders <url>
+  php bin/console getheaders (url)
