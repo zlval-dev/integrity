@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+    .url-wrapper { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .url-wrapper h1{
+        color: #0052A3;
+    }
+    .url-wrapper table{
+        width: 75%;
+    }
+    .url-wrapper table, .url-wrapper th, .url-wrapper td{
+        border: 1px solid #000;
+    }
+    .url-wrapper th{
+        background-color: #6d6d6d;
+        color: #fff;
+        font-size: 24px;
+    }
+    .url-wrapper td{
+        font-size: 18px;
+    }
+    .url-wrapper th, .url-wrapper td{
+        padding: 5px;
+    }
+</style>
+
+<div class="url-wrapper">
+    <h1>Pedidos Efetuados:</h1>
+
+    <table>
+        <tr>
+            <th>Url</th>
+            <th>Value</th>
+        </tr>
+        {% for info in data %}
+            <tr>
+                <td>{{ info.url }}</td>
+                <td>{{ info.date|date("Y-m-d H:i:s") }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
