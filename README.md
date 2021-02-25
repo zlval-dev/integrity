@@ -11,6 +11,7 @@
 -> Dentro da pasta corra os seguintes comandos
 
   docker exec -it php bash
+  
   composer install
   
 -> E o projeto está pronto a ser utilizado!
