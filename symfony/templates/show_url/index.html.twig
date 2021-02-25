@@ -1,19 +1,92 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %} 
+   <script language = "javascript" 
+      src = "https://code.jquery.com/jquery-2.2.4.min.js"></script> 
+   
+   <script language = "javascript">  
+      $(document).ready(function(){
+         $(".ajax").on("click", function(event){
+            let id = $(this).data('id')
+            $.ajax({
+               url: '/ajax?id=' + id,
+               type: 'GET',
+               dataType: 'json',
+               async: true,
+               
+               success: function(data, status){
+                    $('.modal-body').empty()
+                   $.each(data, function(index, value) {
+                        $('.modal-body').append("<tr><td>"+ value.header +"</td><td>"+ value.value +"</td></tr>")
+                    })
+                   $('.modal').css('display', 'flex')
+               },  
+               error : function(xhr, textStatus, errorThrown){
+                  alert('Falha ao carregar os Dados!')
+               }
+            })
+         })
+
+         $(".newurl").on("click", function(event){
+            let newurl = $(".newuser-text").val()
+            $.ajax({
+               url: '/newurl?url=' + newurl,
+               type: 'POST',
+               dataType: 'json',
+               async: true,
+               
+               success: function(data, status){
+                   if(data[0].error == "nourl"){
+                       alert('Preencha o espaço com um url!')
+                   }else if(data[0].error == "invalid"){
+                       alert('Erro obter os Headers HTTP do URL, verifique se introduziu um URL válido e existente!')
+                   }else if(data[0].refresh == 'yes'){
+                       window.location.reload()
+                   }
+               },  
+               error : function(xhr, textStatus, errorThrown){
+                  alert('Falha ao inserir o novo pedido!')
+               }
+            })
+         })
+
+         $('#close-modal').on('click', function(event){
+             $('.modal').css('display', 'none')
+         })
+      })
+   </script> 
+{% endblock %} 
+
 {% block body %}
 <style>
-    .url-wrapper { 
+    .index-page { 
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    .url-wrapper h1{
+    .index-page h1{
         color: #0052A3;
     }
-    .url-wrapper table{
+    .new-url, .url-wrapper{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         width: 75%;
     }
-    .url-wrapper table, .url-wrapper th, .url-wrapper td{
+    .new-url input[type="text"]{
+        width: 75%;
+        padding: 5px;
+        font-size: 16px;
+    }
+    .new-url button{
+        margin: 15px 0;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .url-wrapper table{
+        width: 100%;
+    }
+    table, th, td{
         border: 1px solid #000;
     }
     .url-wrapper th{
@@ -27,22 +100,66 @@
     .url-wrapper th, .url-wrapper td{
         padding: 5px;
     }
+    .modal{
+        position: fixed;
+        background-color: #F3C194;
+        width: 75%;
+        display: none;
+        align-items: center;
+        flex-direction: column;
+        overflow-y: scroll;
+        min-height: 100vh;
+        top: 0;
+        bottom:0;
+    }
+    .modal button{
+        font-size: 24px;
+        cursor: pointer;
+        margin: 25px;
+    }
+    .modal table{
+        width: 90%;
+        font-size: 20px;
+        margin-bottom: 50px;
+    }
+    .modal table td{
+        word-break: break-all;
+        width: 200px;
+    }
+    .modal table td:nth-child(1){
+        color: #fff;
+        background-color: #000;
+    }
 </style>
 
-<div class="url-wrapper">
-    <h1>Pedidos Efetuados:</h1>
+<div class="index-page">
+    <div class="new-url">
+        <h1>Adicionar um novo pedido:</h1>
+        <input type="text" class="newuser-text" />
+        <button class="newurl">Enviar</button>
+    </div>
 
-    <table>
-        <tr>
-            <th>Url</th>
-            <th>Value</th>
-        </tr>
-        {% for info in data %}
+    <div class="url-wrapper">
+        <h1>Pedidos Efetuados:</h1>
+
+        <table>
             <tr>
-                <td>{{ info.url }}</td>
-                <td>{{ info.date|date("Y-m-d H:i:s") }}</td>
+                <th>Url</th>
+                <th>Value</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for info in data %}
+                <tr class="ajax" data-id="{{ info.id }}">
+                    <td>{{ info.url }}</td>
+                    <td>{{ info.date|date("Y-m-d H:i:s") }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="modal">
+        <button id="close-modal">Close</button>
+        <table class="modal-body">
+        </table>
+    </div>
 </div>
 {% endblock %}
