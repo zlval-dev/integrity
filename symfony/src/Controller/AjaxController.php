@@ -15,12 +15,14 @@ class AjaxController extends AbstractController{
     public function index(Request $request){
         if($request->query->get('id')){
             $jsonData = array();
+            // Obter os headers com certo id
             $url_id = $request->query->get('id');
             $url_has_headers_db = $this->getDoctrine()->getRepository(UrlHasHeaders::class);
             $data = $url_has_headers_db->findBy([
                 'url_id' => $url_id
             ]);
             $index = 0;
+            // Passar os dados em JSON
             foreach($data as $info){
                 $jsonData[$index++] = array(
                     'header' => $info->getHeader(),

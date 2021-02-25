@@ -34,7 +34,6 @@ class NewUrlController extends AbstractController
                 $em->persist($db_url);
                 $em->flush();
                 $url_id = $db_url->getId(); // Obter o id do tuplo inserido
-                // Mostrar todos os headers
                 foreach ($response->getHeaders() as $name => $values) {
                     // Adiciona os Headers a tabela url_has_headers da base de dados
                     $em = $this->container->get('doctrine')->getManager();
@@ -45,17 +44,19 @@ class NewUrlController extends AbstractController
                     $em->persist($db_url_has_header);
                     $em->flush();
                 }
+                // No caso de ter inserido poder dar refresh na pagina
                 $jsonData[0] = array(
                     'refresh' => 'yes'
                 );
             }catch(\Exception $e){
-                // Guardar erro de invalido ou inexistente
+                // Utilizador introduziu url invalido ou inexistente
                 $jsonData[0] = array(
                     'error' => 'invalid'
                 );
             }
             return new JsonResponse($jsonData);
         }else{
+            // Utilizador nao introduziu url
             $jsonData = array();
             $jsonData[0] = array(
                 'error' => 'nourl'

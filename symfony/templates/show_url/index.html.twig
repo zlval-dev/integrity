@@ -15,10 +15,13 @@
                async: true,
                
                success: function(data, status){
+                   // Limpar o modal
                     $('.modal-body').empty()
                    $.each(data, function(index, value) {
+                       // Adicionar linhas na tabela
                         $('.modal-body').append("<tr><td>"+ value.header +"</td><td>"+ value.value +"</td></tr>")
                     })
+                    // Mostar o modal
                    $('.modal').css('display', 'flex')
                },  
                error : function(xhr, textStatus, errorThrown){
@@ -27,6 +30,7 @@
             })
          })
 
+        // Criar um novo pedido ao clicar enviar
          $(".newurl").on("click", function(event){
             let newurl = $(".newuser-text").val()
             $.ajax({
@@ -36,11 +40,11 @@
                async: true,
                
                success: function(data, status){
-                   if(data[0].error == "nourl"){
+                   if(data[0].error == "nourl"){// No caso de nao inserir url
                        alert('Preencha o espaço com um url!')
-                   }else if(data[0].error == "invalid"){
+                   }else if(data[0].error == "invalid"){// No caso de ser invalido ou inexiste
                        alert('Erro obter os Headers HTTP do URL, verifique se introduziu um URL válido e existente!')
-                   }else if(data[0].refresh == 'yes'){
+                   }else if(data[0].refresh == 'yes'){// No caso de ter adicionado a base de dados dar refresh na pagina para a tabela aparecer com o novo pedido
                        window.location.reload()
                    }
                },  
@@ -50,6 +54,7 @@
             })
          })
 
+        // Fechar o modal
          $('#close-modal').on('click', function(event){
              $('.modal').css('display', 'none')
          })

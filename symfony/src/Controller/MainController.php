@@ -12,6 +12,7 @@ class MainController extends AbstractController
      * @Route("/", name="show_url")
      */
     public function index(){
+        // Obter todos os pedidos
         $url_db = $this->getDoctrine()->getRepository(Url::class);
         $data = $url_db->findAll();
 
