@@ -10,7 +10,7 @@ Abra um novo terminal, sem fechar o anterior pois esse é onde está a correr o 
 
 Dentro da pasta corra os seguintes comandos
 
-  \tdocker exec -it php bash
+   docker exec -it php bash
   composer install
   
 E o projeto está pronto a ser utilizado!
